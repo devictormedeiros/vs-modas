@@ -1,17 +1,15 @@
 import './index.scss'
 import Header from './components/Header'
-import Counter from './components/Counter'
 import ItemListContainer from './components/ItemListContainer'
-
 function App() {
-
+  const logotipo = 'img/logotipo.jpg';
 
   return (
     <>
-      <Header nameCompany="VS MODAS"/>
-      {/* <Counter/> */}
+      <Header logoCompany={logotipo}/>
+      
       <main className='py-5'>
-      <ItemListContainer greeting="Olá mundo"/>
+      <ItemListContainer title="Lançamentos"/>
       </main>
     </>
   )

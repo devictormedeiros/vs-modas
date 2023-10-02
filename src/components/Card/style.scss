@@ -1,0 +1,90 @@
+article.product-item {
+    // fazer um box shadow leve no card
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    padding: 0;
+   
+
+    figure{
+        img{
+            height: 350px;
+            width: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: all 0.3s ease-in-out;
+            border-radius: 8px;
+            transform: scale(1.01);
+            &:hover{
+                transform: scale(1.02);
+            
+            }
+        }
+    }
+    .body{
+        padding: 1rem;
+        h3{
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        .product-price{
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: rgb(255, 0, 136);
+        }
+        .category-product{
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgb(255, 0, 136);
+            margin-bottom: 4px;
+        }
+        .box-add-cart{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-top: 8px;
+            button{
+                border: 0;
+                background-color: transparent;
+                color: var(--bs-primary);
+                font-size: 1.3rem;
+                font-weight: 700;
+                height: fit-content;
+            }
+            input{
+                font-weight: 700;
+                width: 60px;
+                text-align: center;
+                appearance: none;
+                -moz-appearance: textfield;
+                appearance: textfield;
+                border: 1px solid #ddd;
+                &::-webkit-inner-spin-button { 
+                    -webkit-appearance: none;
+                }                
+            }
+        }
+        button.btn-add-cart{
+
+            background-color: var(--bs-white);
+            color: var(--bs-primary);
+            border-color: var(--bs-primary);
+            margin-top: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+            &:hover{
+                background-color: var(--bs-primary);
+                border-color: var(--bs-primary);
+                color: var(--bs-white);
+            }
+        }
+    }
+}

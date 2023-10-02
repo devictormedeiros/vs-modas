@@ -6,3 +6,9 @@ $size-3: 32px;
 $size-4: 24px;
 $size-5: 19.2px;
 $size-text: 22.4px;
+
+:root{
+    --bs-primary: #ff0088;
+    --bs-primary-rgb: rgba(255, 0, 136, 0.8);
+    --header-height: 120px;
+}
