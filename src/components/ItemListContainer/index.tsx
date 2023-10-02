@@ -77,7 +77,7 @@ const ItemListContainer = ({ title }: IProps) => {
       <div className="container">
           <div className="row">
             <div className="col-12">
-              <h2 className="w-100 text-center mb-4 text-uppercase section-title">{title}</h2>
+              <h2 className="text-center mb-4 text-uppercase section-title">{title}</h2>
             </div>
           </div>
         <div className="list-products">
