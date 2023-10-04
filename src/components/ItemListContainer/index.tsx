@@ -1,5 +1,5 @@
 import Card from "../Card";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 
 interface IProps {
@@ -15,7 +15,13 @@ interface Product {
   stock: number;
 }
 
+
 const ItemListContainer = ({ title }: IProps) => {
+
+  // criando uma const listProducts iniciando ela com valor de array vazio
+  const [listProducts, setListProducts] = useState<Product[]>([]);
+
+  // criando uma const products com valor de array de objetos simulando que veio de uma api
   const products: Product[] = [
     { 
       id: 1, 
@@ -51,23 +57,27 @@ const ItemListContainer = ({ title }: IProps) => {
      },
   ];
 
+  // funcão chamada no displayProducts que é assincrona e retorna uma promessa que no resolve dela, traz uma lista de produtos.
   const fetchProducts = (): Promise<Product[]> => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(products);
-      }, 3000);
+      }, 2000);
     });
   };
 
+
+  // chamada no useEffect e ela é assincrona e roda uma promisse fetchProducts, ela tem await que é pra esperar ela ser resolvida para poder usar o setListProducts
   const displayProducts = async () => {
     try {
       const fetchedProducts = await fetchProducts();
-      console.log(fetchedProducts);
+      setListProducts(fetchedProducts);
     } catch (error) {
       console.error("Erro ao buscar os produtos:", error);
     }
   };
 
+  // O useEffect com uma dependência vazia, é uma maneira comum de fazer uma chamada a uma função de forma semelhante à chamada direta de displayProducts().
   useEffect(() => {
     displayProducts();
   }, []);
@@ -81,7 +91,7 @@ const ItemListContainer = ({ title }: IProps) => {
             </div>
           </div>
         <div className="list-products">
-            {products.map((product) => (
+            {listProducts.map((product) => (
               <Card key={product.id} product={product}/>
             ))}
         </div>
