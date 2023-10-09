@@ -5,7 +5,7 @@ interface IProps {
 }
 const ItemCount = ({stock}: IProps) =>{
 
-    const [qtyProduct, setQtyProduct] = useState(0);
+    const [qtyProduct, setQtyProduct] = useState(1);
 
     const addProduct = () => {
         if(qtyProduct < stock){

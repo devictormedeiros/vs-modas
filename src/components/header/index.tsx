@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
-import NavBar from "../NavBar";
+import NavBar from "./NavBar";
 
 
 // Definindo as props para o componente Header e os tipos dela
