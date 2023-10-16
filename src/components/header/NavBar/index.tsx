@@ -12,19 +12,19 @@ const NavBar = () => {
           <a href="/loja">Loja</a>
         </li>
         <li>
-          <a href="/categoria/camisetas">Camisetas</a>
+          <a href="/category/camisetas">Camisetas</a>
         </li>
         <li>
-          <a href="/categoria/calcas">Calças</a>
+          <a href="/category/calcas">Calças</a>
         </li>
         <li>
-          <a href="/categoria/saias">Saias</a>
+          <a href="/category/saias">Saias</a>
         </li>
         <li>
-          <a href="/categoria/vestidos">Vestidos</a>
+          <a href="/category/vestidos">Vestidos</a>
         </li>
         <li>
-          <a href="/categoria/sapatos">Sapatos</a>
+          <a href="/category/sapatos">Sapatos</a>
         </li>
         <li>
           <CartWidget/>

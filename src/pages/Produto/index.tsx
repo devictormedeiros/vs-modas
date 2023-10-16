@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get } from "../../services/api.service";
 import Loading from "../../components/Loading";
+import { ProductTypes } from "../../components/Products/ProductTypes";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  images: string[];
-  stock_status: boolean;
-  short_description: string;
-}
+
 
 const ProdutoPage = () => {
   const { id } = useParams(); // Captura o id da URL
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<ProductTypes>();
   const [loading, setLoading] = useState(true);
 
   // Função para remover as tags HTML da descrição
