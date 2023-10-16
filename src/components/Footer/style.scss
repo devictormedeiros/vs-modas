@@ -1,0 +1,22 @@
+footer{
+    background-color: var(--bs-primary);
+    padding: 40px 0;
+    h3,p,a{
+        color: var(--bs-white);
+    }
+    h3{
+        font-size: 24px;
+        margin-bottom: 16px;
+        border-bottom: 2px solid var(--bs-white);
+        width: fit-content;
+    }
+    p,a{
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    ul{
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+}

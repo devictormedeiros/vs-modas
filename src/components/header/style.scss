@@ -8,12 +8,7 @@ header{
     -webkit-backdrop-filter: blur(8px);
     border-radius: 8px;
     filter: drop-shadow(0rem 0.625rem 0.625rem rgba(0, 0, 0, 0.5));
-    a.logo{
-        img{
-            border-radius: 100%;
-            width: 100px;
-        }
-    }
+
     height: var(--header-height);
     nav{
         ul.navbar{

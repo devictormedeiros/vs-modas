@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./style.scss";
 import NavBar from "./NavBar";
+import Logotipo from "../Logotipo";
 
 
 // Definindo as props para o componente Header e os tipos dela
@@ -18,9 +19,7 @@ const Header = ({logoCompany }:IProps) => {
     <header className="container px-4 fixed-top">
         <div className="row align-items-center">
           <div className="col-lg-3">
-            <a href="/" className="logo">
-              <img src={logoCompany} alt="lotipo da VS modas" />
-            </a>
+            <Logotipo />
           </div>
           <div className="col-lg-9">
             <NavBar/>
