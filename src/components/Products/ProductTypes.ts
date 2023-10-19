@@ -4,7 +4,7 @@ export interface ProductTypes {
   price: number | string;
   images: {src:string}[];
   stock_status: boolean | string;
-  stock_quantity: number;
+  stock_quantity: number | undefined;
   short_description?: string;
   categories: { name: string }[];
 }
