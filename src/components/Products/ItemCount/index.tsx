@@ -2,12 +2,12 @@ import "./style.scss";
 
 interface IProps {
   quantity: number;
-  stock: number | undefined;
+  stock: number;
   handleAdd: () => void;
   handleRemove: () => void;
 }
 
-const ItemCount = ({ quantity, stock, handleAdd, handleRemove}: IProps) => {
+const ItemCount = ({ quantity, stock = 0, handleAdd, handleRemove}: IProps) => {
 
   return (
     <>
