@@ -1,5 +1,5 @@
 import Card from "../Card";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.scss";
 import Loading from "../../Loading";
 import { get } from "../../../services/api.service";
@@ -12,14 +12,13 @@ interface IProps {
 }
 
 const ItemListContainer = ({ title, categorySlug }: IProps) => {
-
   // criando uma const listProducts iniciando ela com valor de array vazio
   const [listProducts, setListProducts] = useState<ProductTypes[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Função para obter o ID da categoria usando o slug
-  async function getCategoryIDBySlug(slug) {
+  async function getCategoryIDBySlug(slug: string | undefined) {
     const response = await get(`products/categories?slug=${slug}`);
     if (response.data && response.data.length > 0) {
       return response.data[0].id;
@@ -40,7 +39,9 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
           if (categoryID) {
             productParams = { category: categoryID };
           } else {
-            console.warn(`Category with slug "${categorySlug}" not found.`);
+            console.warn(
+              `A categoria com o slug "${categorySlug}" não foi encontrada.`
+            );
             setLoading(false);
             // Se a categoria não for encontrada, não há necessidade de continuar
             return;
@@ -49,7 +50,7 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
 
         // Busque produtos, seja todos ou filtrados por categoria
         const products = await get("products", productParams);
-        console.log("lista", products?.data);
+        // console.log("lista", products?.data);
         setListProducts(products?.data);
         setLoading(false);
       } catch (error) {
@@ -67,21 +68,31 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h2 className="text-center mb-4 text-uppercase section-title">
-              {title}
-            </h2>
+            {title ? (
+              <h2 className="text-center mb-4 text-uppercase section-title">
+                {title}
+              </h2>
+            ) : (
+              ""
+            )}
           </div>
         </div>
-        <div className="list-products">
+        <div className="list-products row">
           {listProducts?.length === 0 && loading === true ? <Loading /> : ""}
           {listProducts?.length === 0 && loading === false ? (
-            <div className="error-container w-fit text-center alert alert-danger mx-auto">
+            <div className="error-container w-fit text-center alert alert-danger mx-auto my-5">
               <p>Nenhum produto encontrado.</p>
-              </div>
-              ) : ""}
+            </div>
+          ) : (
+            ""
+          )}
           {!error &&
             listProducts?.map((product) => (
-              <Card key={product.id} product={product} />
+         
+                <div key={product?.id} className="col-lg-3">
+                  <Card product={product} />
+                </div>
+         
             ))}
           {error && (
             <div className="error-container w-fit text-center alert alert-danger mx-auto">
