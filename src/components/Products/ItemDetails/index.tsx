@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { get } from "../../../services/api.service";
-import { ProductTypes } from "../ProductTypes";
+import { ProductTypes, ProductInCart } from "../ProductTypes";
 import ItemCount from "../ItemCount";
 import Loading from "../../Loading";
+import { useCart } from "../../../context/cartContext";
 
 const ItemDetails = () => {
   // Captura o ID do produto a partir da URL
@@ -14,17 +15,22 @@ const ItemDetails = () => {
   const [loading, setLoading] = useState(true);
   const [qtyProduct, setQtyProduct] = useState(1);
 
+  // Usa o contexto do carrinho
+  const { addItem, listCart, clearError } = useCart();
+
   // Hook para navegar entre as rotas
   const navigate = useNavigate();
 
+  // Incrementa a quantidade do produto
   const handleAddQuantity = () => {
     if (qtyProduct < (product?.stock_quantity || 0)) {
       setQtyProduct(qtyProduct + 1);
     }
   };
-  
+
+  // Decrementa a quantidade do produto
   const handleRemoveQuantity = () => {
-    if (qtyProduct > 0) {
+    if (qtyProduct > 1) {
       setQtyProduct(qtyProduct - 1);
     }
   };
@@ -46,7 +52,6 @@ const ItemDetails = () => {
       try {
         // Busca os detalhes do produto usando o ID capturado da URL
         const product = await get(`products/${id}`);
-        console.log(product?.data);
 
         // Atualiza o estado com os dados do produto e define o status de carregamento como false
         setProduct(product?.data);
@@ -59,9 +64,29 @@ const ItemDetails = () => {
     getProduct();
   }, [id]);
 
+  useEffect(() => {
+    console.log("lista carrinho", listCart);
+  }, [listCart]);
+
   // Função chamada ao clicar no botão de adicionar ao carrinho
   const handleAddToCart = () => {
-    navigate(`/cart/product/${product?.id}/quantity/${qtyProduct}`);
+    if (product && qtyProduct) {
+      const productWithQty: ProductInCart = {
+        ...product,
+        qtyCart: qtyProduct,
+      };
+
+      // Adiciona o produto ao carrinho e verifica a resposta
+      const result: string = addItem(productWithQty);
+
+      if (result === "success") {
+        // Navega para o carrinho se a adição foi bem-sucedida
+        navigate("/cart");
+      } else {
+        alert(result);
+        clearError();
+      }
+    }
   };
 
   return (
@@ -83,8 +108,16 @@ const ItemDetails = () => {
             {/* Verifica se o produto está em estoque para mostrar a quantidade e o botão */}
             {isInStock ? (
               <>
-                <ItemCount stock={product?.stock_quantity} quantity={qtyProduct} handleAdd={handleAddQuantity} handleRemove={handleRemoveQuantity}/>
-                <button className="btn btn-primary btn-add-cart" onClick={handleAddToCart}>
+                <ItemCount
+                  stock={product?.stock_quantity}
+                  quantity={qtyProduct}
+                  handleAdd={handleAddQuantity}
+                  handleRemove={handleRemoveQuantity}
+                />
+                <button
+                  className="btn btn-primary btn-add-cart"
+                  onClick={handleAddToCart}
+                >
                   Finalizar compra
                 </button>
               </>
