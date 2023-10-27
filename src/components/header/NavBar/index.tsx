@@ -6,25 +6,22 @@ const NavBar = () => {
     <nav>
       <ul className="navbar">
         <li>
-          <Link to="/home" >Home</Link>
+          <Link to="loja">Loja</Link>
         </li>
         <li>
-          <a href="/loja">Loja</a>
+          <Link to="category/camisetas">Camisetas</Link>
         </li>
         <li>
-          <a href="/category/camisetas">Camisetas</a>
+          <Link to="category/calcas">Calças</Link>
         </li>
         <li>
-          <a href="/category/calcas">Calças</a>
+          <Link to="category/saias">Saias</Link>
         </li>
         <li>
-          <a href="/category/saias">Saias</a>
+          <Link to="category/vestidos">Vestidos</Link>
         </li>
         <li>
-          <a href="/category/vestidos">Vestidos</a>
-        </li>
-        <li>
-          <a href="/category/sapatos">Sapatos</a>
+          <Link to="category/sapatos">Sapatos</Link>
         </li>
         <li>
           <CartWidget/>

@@ -5,6 +5,7 @@ interface IProps {
   stock: number;
   handleAdd: () => void;
   handleRemove: () => void;
+  onChangeQty?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ItemCount = ({ quantity, stock = 0, handleAdd, handleRemove}: IProps) => {

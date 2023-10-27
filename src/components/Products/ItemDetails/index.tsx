@@ -89,6 +89,7 @@ const ItemDetails = () => {
     }
   };
 
+
   return (
     <div className="row">
       {/* Se não estiver carregando, mostra os detalhes do produto */}
@@ -114,9 +115,8 @@ const ItemDetails = () => {
                   handleAdd={handleAddQuantity}
                   handleRemove={handleRemoveQuantity}
                 />
-                <button
-                  className="btn btn-primary btn-add-cart"
-                  onClick={handleAddToCart}
+                {/* Essa função é só um reforço porque não tem possibilidade de add mais do que o stock ou 0 */}
+                <button disabled={qtyProduct > product.stock_quantity ? true : false} className="btn btn-primary btn-add-cart" onClick={handleAddToCart}
                 >
                   Finalizar compra
                 </button>

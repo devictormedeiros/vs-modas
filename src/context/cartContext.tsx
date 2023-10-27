@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ProductInCart } from "../components/Products/ProductTypes";
 
+
 // Definindo a interface de contexto para o carrinho
 interface ICart {
   addItem: (product: ProductInCart) => string;
