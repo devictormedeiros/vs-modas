@@ -5,6 +5,7 @@ import { ProductTypes, ProductInCart } from "../ProductTypes";
 import ItemCount from "../ItemCount";
 import Loading from "../../Loading";
 import { useCart } from "../../../context/cartContext";
+import { collection, getFirestore, where,query, getDocs } from "firebase/firestore";
 
 const ItemDetails = () => {
   // Captura o ID do produto a partir da URL
@@ -59,7 +60,29 @@ const ItemDetails = () => {
       } catch (error) {
         console.error("Erro ao obter produto:", error);
         setLoading(false);
+        try {
+          // Se falhar ao buscar no WooCommerce, tenta buscar no Firebase
+          const firebaseProduct = await getFromFirebase(`${id}`);
+          setProduct(firebaseProduct);
+          setLoading(false);
+        } catch (firebaseError) {
+          console.error("Erro ao obter produto do Firebase:", firebaseError);
+          setLoading(false);
+        }
       }
+    };
+    const getFromFirebase = async (id: string) => {
+      const db = getFirestore();
+      const itemCollection = collection(db, "item-colection");
+      const q = query(itemCollection, where("id", "==", id));
+  
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        console.log('Nenhum documento encontrado para o ID:', id);
+        return null;
+      }
+      const productData = querySnapshot.docs[0].data();
+      return productData;
     };
     getProduct();
   }, [id]);

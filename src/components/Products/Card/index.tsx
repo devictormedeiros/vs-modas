@@ -17,7 +17,7 @@ const isInStock = stock_status === 'instock' && stock_quantity > 0;
     <article className="product-item">
       <Link to={`/products/${product?.id}`}>
         <figure>
-          <img src={product?.images[0].src}></img>
+          <img src={product?.images[0].src || product?.images[0]}></img>
         </figure>
       </Link>
       <div className="body">
@@ -32,7 +32,7 @@ const isInStock = stock_status === 'instock' && stock_quantity > 0;
         </Link>
         <p className="product-price">R${price}</p>
         {isInStock? '' : 'Produto indisponível'}
-      {/* <button className="btn btn-primary btn-add-cart" onClick={}>Adicionar ao carrinho</button> */}
+
       </div>
     </article>
   );

@@ -4,6 +4,7 @@ import "./style.scss";
 import Loading from "../../Loading";
 import { get } from "../../../services/api.service";
 import { ProductTypes } from "../ProductTypes";
+import { collection, getDocs, getFirestore, where, query } from "firebase/firestore";
 
 // Definindo as propriedades que o componente pode receber
 interface IProps {
@@ -11,9 +12,11 @@ interface IProps {
   categorySlug?: string;
 }
 
-const ItemListContainer = ({ title, categorySlug }: IProps) => {
+const ItemListContainer = ({ title, categorySlug = "" }: IProps) => {
   // criando uma const listProducts iniciando ela com valor de array vazio
   const [listProducts, setListProducts] = useState<ProductTypes[]>([]);
+  const [listProductsFirebase, setListProductsFirebase] = useState<ProductTypes[]>([]);
+ // coletando item no firebase para atividade da aula
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -63,6 +66,28 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
     getProducts();
   }, [categorySlug]); // O useEffect será re-executado sempre que categorySlug mudar
 
+  // coletando item no firebase para atividade da aula
+  useEffect(() => {
+    const onMount = async () => {
+      const db = getFirestore();
+      const itemCollection = collection(db, "item-colection");
+  
+      // Criação de uma consulta condicional com base no categorySlug
+      let queryParams;
+      if (categorySlug) {
+        queryParams = query(itemCollection, where("categories", "array-contains", categorySlug));
+      } else {
+        queryParams = itemCollection; // Busca geral, sem filtrar por categoria
+      }
+  
+      const lista = await getDocs(queryParams); // Usando a consulta definida acima
+      const listaFirebase = lista.docs.map((doc) => doc.data());
+  
+      setListProductsFirebase(listaFirebase);
+    };
+    onMount();
+  }, [categorySlug]);
+
   return (
     <section>
       <div className="container">
@@ -78,6 +103,7 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
           </div>
         </div>
         <div className="list-products row">
+        <h1>PRODUTOS DO WOOCOMMERCE</h1>
           {listProducts?.length === 0 && loading === true ? <Loading /> : ""}
           {listProducts?.length === 0 && loading === false ? (
             <div className="error-container w-fit text-center alert alert-danger mx-auto my-5">
@@ -86,13 +112,20 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
           ) : (
             ""
           )}
+
           {!error &&
             listProducts?.map((product) => (
-         
-                <div key={product?.id} className="col-lg-3">
-                  <Card product={product} />
-                </div>
-         
+              <div key={product?.id} className="col-lg-3">
+                <Card product={product} />
+              </div>
+            ))}
+            {/* //RENDERIZANDO OS PRODUTOS DO FIREBASE  */}
+            <h1>PRODUTOS DO FIREBASE</h1>
+            {!error &&
+            listProductsFirebase?.map((product) => (
+              <div key={product?.id} className="col-lg-3">
+                <Card product={product} />
+              </div>
             ))}
           {error && (
             <div className="error-container w-fit text-center alert alert-danger mx-auto">
