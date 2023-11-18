@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import CategoryPage from "../pages/Category";
 import Footer from "../components/Footer";
 import CartPage from "../pages/Cart";
+import CheckoutPage from "../pages/Checkout";
 
 const Routers = () => {
   return (
@@ -13,9 +14,11 @@ const Routers = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/loja" element={<Home />} />
         <Route path="/products/:id" element={<ProdutoPage />} />
         <Route path="/category/:category" element={<CategoryPage />} />
         <Route path="/cart" element={<CartPage/>} />
+        <Route path="/checkout" element={<CheckoutPage/>} />
 
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

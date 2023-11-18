@@ -5,6 +5,7 @@ import { ProductTypes, ProductInCart } from "../ProductTypes";
 import ItemCount from "../ItemCount";
 import Loading from "../../Loading";
 import { useCart } from "../../../context/cartContext";
+import "./style.scss";
 
 const ItemDetails = () => {
   // Captura o ID do produto a partir da URL
@@ -48,6 +49,7 @@ const ItemDetails = () => {
 
   // Efeito para carregar os detalhes do produto ao montar o componente
   useEffect(() => {
+    setLoading(true);
     const getProduct = async () => {
       try {
         // Busca os detalhes do produto usando o ID capturado da URL
@@ -63,10 +65,6 @@ const ItemDetails = () => {
     };
     getProduct();
   }, [id]);
-
-  useEffect(() => {
-    console.log("lista carrinho", listCart);
-  }, [listCart]);
 
   // Função chamada ao clicar no botão de adicionar ao carrinho
   const handleAddToCart = () => {
@@ -101,11 +99,11 @@ const ItemDetails = () => {
               <img src={product?.images[0].src} alt={product?.name} />
             </figure>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 ps-5">
             {/* Mostra o nome, descrição e preço do produto */}
-            <h2 className="mb-4">{product?.name}</h2>
-            <p className="mb-4">{removeHtmlTags(product?.short_description)}</p>
-            <p className="mb-4">R${product?.price}</p>
+            <h2 className="mb-4 title-produto">{product?.name}</h2>
+            <p className="mb-4 description-product">{removeHtmlTags(product?.short_description)}</p>
+            <p className="mb-4 price-product"><span className="price-symbol">R$</span>{product?.price}</p>
             {/* Verifica se o produto está em estoque para mostrar a quantidade e o botão */}
             {isInStock ? (
               <>
@@ -118,7 +116,7 @@ const ItemDetails = () => {
                 {/* Essa função é só um reforço porque não tem possibilidade de add mais do que o stock ou 0 */}
                 <button disabled={qtyProduct > product.stock_quantity ? true : false} className="btn btn-primary btn-add-cart" onClick={handleAddToCart}
                 >
-                  Finalizar compra
+                  Adicionar ao carrinho
                 </button>
               </>
             ) : (

@@ -11,3 +11,10 @@ export async function get(endpoint: string, productParams?: any) {
     };
     return axios.get(baseUrl + endpoint, { headers: authHeader, params: productParams })
 }
+
+export async function post(endpoint: string, data: any) {
+    const authHeader = {
+        Authorization: `Basic ${btoa(`${consumerKey}:${consumerSecret}`)}`
+    };
+    return axios.post(baseUrl + endpoint, data, { headers: authHeader })
+}

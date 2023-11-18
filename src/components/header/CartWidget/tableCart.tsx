@@ -16,42 +16,65 @@ const TableCart = () => {
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Quantidade</th>
-          <th>Preço</th>
-          <th>Remover</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* Mapeando cada produto do carrinho para exibir na tabela */}
-        {listCart.map((product) => (
-          <tr key={product.id}>
-            <td>{product.name}</td>
-            <td>{product.qtyCart}</td>
-            <td>R${product.price}</td>
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Remover</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Mapeando cada produto do carrinho para exibir na tabela */}
+          {listCart.map(
+            (product) => (
+              console.log(product),
+              (
+                <tr key={product.id}>
+                  <td>
+                    <div className="d-flex gap-3 align-items-center">
+                      <figure>
+                        <img src={product.images[0].src} alt="" />
+                      </figure>
+                      {product.name}
+                    </div>
+                  </td>
+                  <td>{product.qtyCart}</td>
+                  <td>R${product.price}</td>
+                  <td>
+                    {/* Botão para remover o produto atual do carrinho */}
+                    <button
+                      className="btn-clean-cart"
+                      onClick={() => handleRemoveItem(product.id)}
+                    >
+                      x
+                    </button>
+                  </td>
+                </tr>
+              )
+            )
+          )}
+        </tbody>
+      </table>
+      <table className="tale-cart-total">
+        <thead>
+          <tr>
+            <th colSpan={2}>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R${valorTotal}</td>
             <td>
-              {/* Botão para remover o produto atual do carrinho */}
-              <button onClick={() => handleRemoveItem(product.id)}>
-                Remover
-              </button>
+              {/* Botão para remover todos os itens do carrinho */}
+              <button className="btn" onClick={handleClear}>Limpar carrinho</button>
             </td>
           </tr>
-        ))}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colSpan={2}>Total</td>
-          <td>R${valorTotal}</td>
-          <td>
-            {/* Botão para remover todos os itens do carrinho */}
-            <button onClick={handleClear}>Remover todos</button>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+        </tbody>
+      </table>
+    </>
   );
 };
 

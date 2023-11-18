@@ -1,5 +1,5 @@
 // FONTES
-$font-family-base: "Nunito", sans-serif;
+$font-family-base: var(--font-family-base);
 $size-1: 48px;
 $size-2: 40px;
 $size-3: 32px;
@@ -11,4 +11,6 @@ $size-text: 22.4px;
     --bs-primary: #ff0088;
     --bs-primary-rgb: rgba(255, 0, 136, 0.8);
     --header-height: 120px;
+    --font-family-base: "Nunito", sans-serif;
+    --border-radius: 4px;
 }

@@ -4,6 +4,8 @@ import "./style.scss";
 import Loading from "../../Loading";
 import { get } from "../../../services/api.service";
 import { ProductTypes } from "../ProductTypes";
+import { debug } from "console";
+import { set } from "firebase/database";
 
 // Definindo as propriedades que o componente pode receber
 interface IProps {
@@ -27,6 +29,8 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
   }
 
   useEffect(() => {
+    setLoading(true);
+    // Função para obter os produtos da API
     const getProducts = async () => {
       try {
         let productParams = {};
@@ -42,7 +46,7 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
             console.warn(
               `A categoria com o slug "${categorySlug}" não foi encontrada.`
             );
-            setLoading(false);
+  
             // Se a categoria não for encontrada, não há necessidade de continuar
             return;
           }
@@ -53,6 +57,9 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
         // console.log("lista", products?.data);
         setListProducts(products?.data);
         setLoading(false);
+        
+       
+    
       } catch (error) {
         console.error("Erro ao obter produtos:", error);
         setError(true);
@@ -65,42 +72,39 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
 
   return (
     <section>
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            {title ? (
-              <h2 className="text-center mb-4 text-uppercase section-title">
-                {title}
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-        <div className="list-products row">
-          {listProducts?.length === 0 && loading === true ? <Loading /> : ""}
-          {listProducts?.length === 0 && loading === false ? (
-            <div className="error-container w-fit text-center alert alert-danger mx-auto my-5">
-              <p>Nenhum produto encontrado.</p>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              {title && (
+                <h2 className="text-center mb-4 text-uppercase section-title">
+                  {title}
+                </h2>
+              )}
             </div>
-          ) : (
-            ""
-          )}
-          {!error &&
-            listProducts?.map((product) => (
-         
+          </div>
+          <div className="list-products row">
+            {listProducts?.length === 0 ? (
+              <div className="error-container w-fit text-center alert alert-danger mx-auto my-5">
+                <p>Nenhum produto encontrado.</p>
+              </div>
+            ) : (
+              listProducts?.map((product) => (
                 <div key={product?.id} className="col-lg-3">
                   <Card product={product} />
                 </div>
-         
-            ))}
-          {error && (
-            <div className="error-container w-fit text-center alert alert-danger mx-auto">
-              <p>Ocorreu um erro ao obter os produtos.</p>
-            </div>
-          )}
+              ))
+            )}
+            {error && (
+              <div className="error-container w-fit text-center alert alert-danger mx-auto">
+                <p>Ocorreu um erro ao obter os produtos.</p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };
