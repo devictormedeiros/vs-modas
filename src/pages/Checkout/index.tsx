@@ -3,6 +3,8 @@ import "./style.scss";
 import { post } from "../../services/api.service";
 import { useCart } from "../../context/cartContext";
 import { useNavigate } from "react-router-dom";
+import OrderResponse from "../../components/Checkout/OrderResponse";
+import OrderSucess from "../../components/Checkout/OrderSucess";
 
 interface IOrderData {
   [key: string]: any;
@@ -48,8 +50,10 @@ interface CheckoutPageProps {
 }
 
 
+
 const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
   const {listCart, clearCart} = useCart();
+  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
   const navigate = useNavigate();
 
   const ReturnStore = () => {
@@ -65,6 +69,8 @@ const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
     payment_method: "",
     payment_method_title: "",
     set_paid: true,
+    currency: "BRL",
+    currency_symbol: "R$",
     billing: {
       first_name: "",
       last_name: "",
@@ -112,6 +118,7 @@ const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
       try {
         const response = await post('orders', orderData);
         console.log('Pedido criado:', response.data);
+        setOrderResponse(response.data);
         clearCart();
       } catch (error) {
         console.error("Erro ao criar pedido:", error);
@@ -156,8 +163,10 @@ const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
   // Você pode adicionar ou remover campos conforme necessário
   return (
     <section className="container">
-      {listCart.length > 0 ? (
-      <>
+      {orderResponse ? (
+        <OrderSucess orderResponse={orderResponse}/>
+      ) : listCart.length > 0 ? (
+        <>
         <h2 className="text-center mb-4 text-uppercase section-title">
           Finalizar Pedido
         </h2>
