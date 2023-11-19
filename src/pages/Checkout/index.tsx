@@ -49,12 +49,18 @@ interface CheckoutPageProps {
 
 
 const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
-  const {listCart} = useCart();
+  const {listCart, clearCart} = useCart();
   const navigate = useNavigate();
 
   const ReturnStore = () => {
     navigate('/home');
   };
+    // Mapeia os itens do carrinho para o formato esperado por 'line_items' ao inicializar o estado
+    const initialLineItems = listCart.map(item => ({
+      product_id: item.id,
+      quantity: item.qtyCart,
+    }));
+
   const [orderData, setOrderData] = useState<IOrderData>({
     payment_method: "",
     payment_method_title: "",
@@ -81,7 +87,7 @@ const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
       postcode: "",
       country: "",
     },
-    line_items: [],
+    line_items: initialLineItems,
     shipping_lines: [
       {
         method_id: "flat_rate",
@@ -101,10 +107,12 @@ const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
         quantity: item.qtyCart,
       }))
     }));
+
     const createOrder = async () => {
       try {
         const response = await post('orders', orderData);
         console.log('Pedido criado:', response.data);
+        clearCart();
       } catch (error) {
         console.error("Erro ao criar pedido:", error);
       }
