@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import TableCart from "../../components/Header/CartWidget/TableCart";
+import TableCart from "../../components/Header/CartWidget/tableCart";
 import "./style.scss";
 import { useCart } from "../../context/cartContext";
 
