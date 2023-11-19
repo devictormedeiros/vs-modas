@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import ItemCount from "../ItemCount";
 import "./style.scss";
 import { ProductTypes } from "../ProductTypes";
 

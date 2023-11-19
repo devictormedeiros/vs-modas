@@ -45,13 +45,11 @@ interface IOrderData {
     }
   ];
 }
-interface CheckoutPageProps {
-  onSubmit: () => void; // Substitua com a assinatura correta se necessário
-}
 
 
 
-const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
+
+const CheckoutPage:React.FC = () => {
   const {listCart, clearCart} = useCart();
   const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
   const navigate = useNavigate();

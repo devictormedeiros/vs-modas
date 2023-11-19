@@ -4,8 +4,6 @@ import "./style.scss";
 import Loading from "../../Loading";
 import { get } from "../../../services/api.service";
 import { ProductTypes } from "../ProductTypes";
-import { debug } from "console";
-import { set } from "firebase/database";
 
 // Definindo as propriedades que o componente pode receber
 interface IProps {

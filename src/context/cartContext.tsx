@@ -11,7 +11,6 @@ interface ICart {
   removeItem: (itemId: number) => void;
   clearCart: () => void;
   isInCart: (id: number) => boolean;
-  clearError: () => void; 
 }
 
 // Criando o contexto com valores padrões
@@ -23,7 +22,6 @@ export const CartContext = createContext<ICart>({
   removeItem: () => {},
   clearCart: () => {},
   isInCart: () => false,
-  clearError: () => {}
 });
 
 // Definindo a interface para as propriedades do provedor de contexto
@@ -53,7 +51,6 @@ const CartProvider = ({ children }: ICartProvider) => {
     if (existingProductIndex !== -1) {
       // Verifica se a quantidade desejada excede o estoque disponível
       if (updatedList[existingProductIndex].qtyCart + product.qtyCart > product.stock_quantity) {
-        setError("Não há estoque suficiente para adicionar essa quantidade ao carrinho.");
         return "Não há estoque suficiente para adicionar essa quantidade ao carrinho.";
       } else {
         // Adiciona a quantidade desejada ao produto existente no carrinho
@@ -64,7 +61,6 @@ const CartProvider = ({ children }: ICartProvider) => {
     } else {
       // Para novos produtos, verifica se a quantidade desejada excede o estoque
       if (product.qtyCart > product.stock_quantity) {
-        setError("Não há estoque suficiente para adicionar essa quantidade ao carrinho.");
         return "Não há estoque suficiente para adicionar essa quantidade ao carrinho.";
       } else {
         // Adiciona o novo produto ao carrinho
@@ -90,12 +86,6 @@ const CartProvider = ({ children }: ICartProvider) => {
     return listCart.some((product) => product.id === id);
   };
 
-  // Estado para armazenar possíveis erros
-  const [error, setError] = useState<string | null>(null);
-
-  // Método para limpar o erro
-  const clearError = () => setError(null);
-
   // Efeito para recalcular o valor total do carrinho sempre que a lista de produtos for atualizada
   useEffect(() => {
     const total = CalcValorTotal(listCart);
@@ -115,7 +105,6 @@ const CartProvider = ({ children }: ICartProvider) => {
         isInCart,
         listCart,
         valorTotal,
-        clearError,
         qtyProduct
 
       }}

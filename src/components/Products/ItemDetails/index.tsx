@@ -17,7 +17,7 @@ const ItemDetails = () => {
   const [qtyProduct, setQtyProduct] = useState(1);
 
   // Usa o contexto do carrinho
-  const { addItem, listCart, clearError } = useCart();
+  const { addItem } = useCart();
 
   // Hook para navegar entre as rotas
   const navigate = useNavigate();
@@ -82,7 +82,6 @@ const ItemDetails = () => {
         navigate("/cart");
       } else {
         alert(result);
-        clearError();
       }
     }
   };
