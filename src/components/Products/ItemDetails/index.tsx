@@ -95,7 +95,7 @@ const ItemDetails = () => {
           <div className="col-lg-6">
             {/* Mostra a imagem do produto */}
             <figure>
-              <img src={product?.images[0].src} alt={product?.name} />
+              <img src={product?.images[0]?.src} alt={product?.name} />
             </figure>
           </div>
           <div className="col-lg-6 ps-5">

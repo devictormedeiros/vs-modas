@@ -16,7 +16,7 @@ const isInStock = stock_status === 'instock' && stock_quantity > 0;
     <article className="product-item">
       <Link to={`/products/${product?.id}`}>
         <figure>
-          <img src={product?.images[0].src}></img>
+          <img src={product?.images[0]?.src}></img>
         </figure>
       </Link>
       <div className="body">

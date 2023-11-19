@@ -35,7 +35,7 @@ const TableCart = () => {
                   <td>
                     <div className="d-flex gap-3 align-items-center">
                       <figure>
-                        <img src={product.images[0].src} alt="" />
+                        <img src={product.images[0]?.src} alt="" />
                       </figure>
                       {product.name}
                     </div>
