@@ -30,7 +30,6 @@ const TableCart = () => {
           {/* Mapeando cada produto do carrinho para exibir na tabela */}
           {listCart.map(
             (product) => (
-              console.log(product),
               (
                 <tr key={product.id}>
                   <td>

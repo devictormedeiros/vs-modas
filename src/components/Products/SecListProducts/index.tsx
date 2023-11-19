@@ -54,7 +54,6 @@ const ItemListContainer = ({ title, categorySlug }: IProps) => {
 
         // Busque produtos, seja todos ou filtrados por categoria
         const products = await get("products", productParams);
-        // console.log("lista", products?.data);
         setListProducts(products?.data);
         setLoading(false);
         

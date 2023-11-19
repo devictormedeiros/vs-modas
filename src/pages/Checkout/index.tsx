@@ -1,12 +1,63 @@
-import React, {useEffect } from "react";
+import {ChangeEventHandler, FormEventHandler, useEffect, useState } from "react";
 import "./style.scss";
 import { post } from "../../services/api.service";
-import { debug } from "console";
+import { useCart } from "../../context/cartContext";
+import { useNavigate } from "react-router-dom";
 
-const CheckoutPage = ({ onSubmit }) => {
-  const [orderData, setUserData] = React.useState({
-    payment_method: "bacs",
-    payment_method_title: "Transferência Bancária",
+interface IOrderData {
+  [key: string]: any;
+  payment_method: string;
+  payment_method_title: string;
+  set_paid: boolean;
+  billing: {
+    first_name: string;
+    last_name: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+    email: string;
+    phone: string;
+  };
+  shipping: {
+    first_name: string;
+    last_name: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+  };
+  line_items: {
+    product_id: number;
+    quantity: number;
+  }[];
+  shipping_lines: [
+    {
+      method_id: string;
+      method_title: string;
+      total: string;
+    }
+  ];
+}
+interface CheckoutPageProps {
+  onSubmit: () => void; // Substitua com a assinatura correta se necessário
+}
+
+
+const CheckoutPage:React.FC<CheckoutPageProps> = ({ onSubmit }) => {
+  const {listCart} = useCart();
+  const navigate = useNavigate();
+
+  const ReturnStore = () => {
+    navigate('/home');
+  };
+  const [orderData, setOrderData] = useState<IOrderData>({
+    payment_method: "",
+    payment_method_title: "",
     set_paid: true,
     billing: {
       first_name: "",
@@ -30,12 +81,7 @@ const CheckoutPage = ({ onSubmit }) => {
       postcode: "",
       country: "",
     },
-    line_items: [
-      {
-        product_id: 93,
-        quantity: 2,
-      },
-    ],
+    line_items: [],
     shipping_lines: [
       {
         method_id: "flat_rate",
@@ -45,9 +91,16 @@ const CheckoutPage = ({ onSubmit }) => {
     ],
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit:FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    console.log(e);
+    setOrderData((prevData) => ({
+      ...prevData,
+
+      line_items: listCart.map((item) => ({
+        product_id: item.id,
+        quantity: item.qtyCart,
+      }))
+    }));
     const createOrder = async () => {
       try {
         const response = await post('orders', orderData);
@@ -59,30 +112,48 @@ const CheckoutPage = ({ onSubmit }) => {
     createOrder();
   };
 
-  const handleChange = (e) => {
+  const handleChange : ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
-    let parts = name.split('_');
-    let key = parts[0];
-    let restOfName = parts.slice(1).join('_');
+    const parts = name.split('_');
+    const key = parts[0];
+    const restOfName = parts.slice(1).join('_');
 
-    // debugger;
-    setUserData((prevData) => ({
-      ...prevData,
-     
-      [key]: {...prevData[key],
-        [restOfName]:value},
-    }));
+    setOrderData((prevData) => {
+      if (key === 'billing' || key === 'shipping') {
+        return {
+          ...prevData,
+          [key]: {
+            ...prevData[key],
+            [restOfName]: value,
+          },
+        };
+      } else if(name === 'payment_method') {
+        return {
+          ...prevData,
+          [name]: value,
+          payment_method_title: "Transferência Bancária",
+        };
+      } else {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      }
+    });
   }
   useEffect(() => {
   console.log(orderData);
 }, [orderData]);
 
-
   // Você pode adicionar ou remover campos conforme necessário
   return (
     <section className="container">
+      {listCart.length > 0 ? (
+      <>
+        <h2 className="text-center mb-4 text-uppercase section-title">
+          Finalizar Pedido
+        </h2>
       <form className="form-checkout" onSubmit={handleSubmit}>
-        <h2>Informações de Cobrança</h2>
         <div className="row">
           <div className="col-lg-6">
             <input onChange={handleChange} type="text" name="billing_first_name" placeholder="Nome" />
@@ -134,10 +205,26 @@ const CheckoutPage = ({ onSubmit }) => {
           <div className="col-lg-6">
             <input onChange={handleChange} type="tel" name="billing_phone" placeholder="Telefone" />
           </div>
+          <div className="col-12">
+            <h3 className="text-uppercase">Formas de pagamento</h3>
+            <div className="form-check ps-0">
+              <input onChange={handleChange} type="radio" name="payment_method" value="bacs" id="bacs" />
+              <label htmlFor="bacs">Transferência bancária</label>
+            </div>
+          </div>
         </div>
 
-        <button type="submit">Finalizar Pedido</button>
+        <button className="btn border" type="submit">Finalizar Pedido</button>
       </form>
+      </>
+      ) : (
+        <>
+        <div className="error-container w-fit text-center alert alert-danger mx-auto my-5">
+          <p>Seu carrinho está vazio, clique no botão abaixo para conhecer nossos produtos</p>
+        </div>
+          <button className="mx-auto w-fit btn border d-block mt-4 text-uppercase" onClick={ReturnStore}>Retornar á loja</button>
+          </>
+      )}
     </section>
   );
 };
